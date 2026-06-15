@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Masjid</title>
+    <script>
+      (function () {
+        document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+  </head>
+  <body>
+    <aside class="sidebar">
+      <strong>Admin Masjid</strong>
+      <a href="#settings">Pengaturan</a>
+      <a href="#content">Konten</a>
+      <a href="#finance">Keuangan</a>
+      <a href="#dkm">DKM</a>
+      <a href="#imam">Jadwal</a>
+      <a href="/">Lihat Website</a>
+      <button class="theme-toggle admin-theme-toggle" type="button" data-theme-toggle aria-label="Ganti ke mode gelap">
+        <span data-theme-icon aria-hidden="true">☾</span>
+        <span>Mode</span>
+      </button>
+      <form action="/admin/logout" method="post" class="logout-form">
+        <button type="submit">Logout</button>
+      </form>
+    </aside>
+
+    <main class="dashboard">
+      <section class="panel intro">
+        <p>Dashboard CMS</p>
+        <h1>{{ site_name }}</h1>
+        <span>Kelola informasi masjid dari satu halaman sederhana.</span>
+      </section>
+
+      <section id="settings" class="panel">
+        <h2>Pengaturan Umum</h2>
+        <form action="/admin/settings" method="post" enctype="multipart/form-data" class="form-grid">
+          <label>Nama Masjid <input name="site_name" value="{{ site_name }}" required></label>
+          <label>Gambar Background <input name="hero_image" type="file" accept="image/*"></label>
+          <button type="submit">Simpan Pengaturan</button>
+        </form>
+      </section>
+
+      <section id="content" class="panel">
+        <h2>Manajemen Konten</h2>
+        <form action="/admin/content" method="post" class="form-grid">
+          <label>Jenis
+            <select name="type">
+              <option value="artikel">Artikel</option>
+              <option value="berita">Berita</option>
+              <option value="kegiatan">Kegiatan</option>
+            </select>
+          </label>
+          <label>Tanggal <input name="published_at" type="date" required></label>
+          <label>Judul <input name="title" required></label>
+          <label>Ringkasan <input name="excerpt" required></label>
+          <label class="wide">Isi Konten <textarea name="body" rows="5" required></textarea></label>
+          <button type="submit">Tambah Konten</button>
+        </form>
+        <div class="list">
+          {% for item in contents %}
+          <article class="edit-card">
+            <form action="/admin/content/{{ item.id }}/update" method="post" class="form-grid">
+              <label>Jenis
+                <select name="type">
+                  <option value="artikel" {% if item.type == 'artikel' %}selected{% endif %}>Artikel</option>
+                  <option value="berita" {% if item.type == 'berita' %}selected{% endif %}>Berita</option>
+                  <option value="kegiatan" {% if item.type == 'kegiatan' %}selected{% endif %}>Kegiatan</option>
+                </select>
+              </label>
+              <label>Tanggal <input name="published_at" type="date" value="{{ item.published_at }}" required></label>
+              <label>Judul <input name="title" value="{{ item.title }}" required></label>
+              <label>Ringkasan <input name="excerpt" value="{{ item.excerpt }}" required></label>
+              <label class="wide">Isi Konten <textarea name="body" rows="3" required>{{ item.body }}</textarea></label>
+              <button type="submit">Simpan Perubahan</button>
+            </form>
+            <form action="/admin/content/{{ item.id }}/delete" method="post" class="delete-form"><button class="danger">Hapus</button></form>
+          </article>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section id="finance" class="panel">
+        <h2>Manajemen Keuangan</h2>
+        <form action="/admin/finance" method="post" class="form-grid">
+          <label>Tanggal <input name="date" type="date" required></label>
+          <label>Keterangan <input name="description" required></label>
+          <label>Pemasukan <input name="income" type="number" min="0" value="0"></label>
+          <label>Pengeluaran <input name="expense" type="number" min="0" value="0"></label>
+          <button type="submit">Catat Kas</button>
+        </form>
+        <div class="list">
+          {% for item in finances %}
+          <article class="edit-card">
+            <form action="/admin/finance/{{ item.id }}/update" method="post" class="form-grid">
+              <label>Tanggal <input name="date" type="date" value="{{ item.date }}" required></label>
+              <label>Keterangan <input name="description" value="{{ item.description }}" required></label>
+              <label>Pemasukan <input name="income" type="number" min="0" value="{{ item.income }}"></label>
+              <label>Pengeluaran <input name="expense" type="number" min="0" value="{{ item.expense }}"></label>
+              <button type="submit">Simpan Perubahan</button>
+            </form>
+            <form action="/admin/finance/{{ item.id }}/delete" method="post" class="delete-form"><button class="danger">Hapus</button></form>
+          </article>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section id="dkm" class="panel">
+        <h2>Manajemen DKM</h2>
+        <form action="/admin/dkm" method="post" class="form-grid">
+          <label>Jabatan <input name="role" required></label>
+          <label>Nama <input name="name" required></label>
+          <button type="submit">Tambah Pengurus</button>
+        </form>
+        <div class="list">
+          {% for item in dkm %}
+          <article class="edit-card">
+            <form action="/admin/dkm/{{ item.id }}/update" method="post" class="form-grid">
+              <label>Jabatan <input name="role" value="{{ item.role }}" required></label>
+              <label>Nama <input name="name" value="{{ item.name }}" required></label>
+              <button type="submit">Simpan Perubahan</button>
+            </form>
+            <form action="/admin/dkm/{{ item.id }}/delete" method="post" class="delete-form"><button class="danger">Hapus</button></form>
+          </article>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section id="imam" class="panel">
+        <h2>Manajemen Jadwal Imam & Khatib</h2>
+        <form action="/admin/imam" method="post" class="form-grid">
+          <label>Hari/Event <input name="day" placeholder="Senin / Idul Fitri" required></label>
+          <label>Subuh <input name="subuh" required></label>
+          <label>Dzuhur <input name="dzuhur" required></label>
+          <label>Ashar <input name="ashar" required></label>
+          <label>Maghrib <input name="maghrib" required></label>
+          <label>Isya <input name="isya" required></label>
+          <label class="wide">Khusus <input name="special" placeholder="Khatib Jumat / Imam Idul Adha / Shalat Gerhana"></label>
+          <button type="submit">Tambah Jadwal</button>
+        </form>
+        <div class="list">
+          {% for item in imam %}
+          <article class="edit-card">
+            <form action="/admin/imam/{{ item.id }}/update" method="post" class="form-grid">
+              <label>Hari/Event <input name="day" value="{{ item.day }}" required></label>
+              <label>Subuh <input name="subuh" value="{{ item.subuh }}" required></label>
+              <label>Dzuhur <input name="dzuhur" value="{{ item.dzuhur }}" required></label>
+              <label>Ashar <input name="ashar" value="{{ item.ashar }}" required></label>
+              <label>Maghrib <input name="maghrib" value="{{ item.maghrib }}" required></label>
+              <label>Isya <input name="isya" value="{{ item.isya }}" required></label>
+              <label class="wide">Khusus <input name="special" value="{{ item.special }}"></label>
+              <button type="submit">Simpan Perubahan</button>
+            </form>
+            <form action="/admin/imam/{{ item.id }}/delete" method="post" class="delete-form"><button class="danger">Hapus</button></form>
+          </article>
+          {% endfor %}
+        </div>
+      </section>
+    </main>
+    <script src="{{ url_for('static', filename='js/admin-theme.js') }}" defer></script>
+  </body>
+</html>

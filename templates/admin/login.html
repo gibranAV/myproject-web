@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login Admin Masjid</title>
+    <script>
+      (function () {
+        document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+  </head>
+  <body class="login-page">
+    <main class="login-shell">
+      <section class="login-card" aria-labelledby="login-title">
+        <button class="theme-toggle login-theme-toggle" type="button" data-theme-toggle aria-label="Ganti ke mode gelap">
+          <span data-theme-icon aria-hidden="true">☾</span>
+        </button>
+        <p>Panel Admin</p>
+        <h1 id="login-title">Masuk CMS Masjid</h1>
+        <span>Gunakan akun pengurus untuk mengelola konten, keuangan, DKM, dan jadwal imam.</span>
+
+        {% if error %}
+        <div class="login-error" role="alert">{{ error }}</div>
+        {% endif %}
+
+        <form method="post" class="login-form">
+          <label>
+            Username
+            <input name="username" type="email" value="admin@masjid.org" autocomplete="username" required>
+          </label>
+          <label>
+            Password
+            <input name="password" type="password" autocomplete="current-password" required>
+          </label>
+          <button type="submit">Login</button>
+        </form>
+      </section>
+    </main>
+    <script src="{{ url_for('static', filename='js/admin-theme.js') }}" defer></script>
+  </body>
+</html>

@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Website resmi Masjid Jami Anyar untuk jadwal shalat, kegiatan, keuangan, dan informasi DKM.">
+    <title>Masjid Jami Anyar</title>
+    <link rel="preconnect" href="https://images.unsplash.com">
+    <script>
+      (function () {
+        document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+      })();
+    </script>
+    <link rel="stylesheet" href="assets/css/style.css">
+  </head>
+  <body>
+    <header class="site-header" data-header>
+      <a class="brand" href="#beranda" aria-label="Kembali ke beranda">
+        <span class="brand__mark" aria-hidden="true">م</span>
+        <span>
+          <strong data-site-name>Masjid Jami Anyar</strong>
+          <small>Ramah Jamaah, Terbuka, Berkhidmat</small>
+        </span>
+      </a>
+
+      <nav class="main-nav" data-nav aria-label="Navigasi utama">
+        <a href="#jadwal" data-nav-link>Jadwal</a>
+        <a href="#konten" data-nav-link>Konten</a>
+        <a href="#keuangan" data-nav-link>Keuangan</a>
+        <a href="#dkm" data-nav-link>DKM</a>
+        <a class="nav-login" href="/admin">Admin</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Ganti ke mode gelap">
+          <span data-theme-icon aria-hidden="true">☾</span>
+        </button>
+        <button class="nav-toggle" type="button" data-nav-toggle aria-label="Buka menu navigasi" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section id="beranda" class="hero" data-hero>
+        <div class="hero__overlay"></div>
+        <div class="hero__content">
+          <p class="eyebrow">Website Informasi Jamaah</p>
+          <h1 data-hero-title>Masjid Jami Anyar</h1>
+          <p class="hero__motto">"Memakmurkan masjid, menguatkan ukhuwah, melayani umat."</p>
+          <p class="hero__calligraphy" lang="ar">حي على الصلاة</p>
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="#jadwal">Lihat Waktu Shalat</a>
+            <a class="btn btn--ghost" href="#konten">Kegiatan Terkini</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="jadwal" class="section prayer-section">
+        <div class="section__heading">
+          <p class="eyebrow">Jadwal & Kalender</p>
+          <h2>Waktu Shalat Hari Ini</h2>
+          <p data-hijri-date>Memuat kalender hijriyah...</p>
+        </div>
+
+        <div class="prayer-grid" data-prayer-grid aria-live="polite">
+          <!-- Diisi oleh main.js. Nanti fungsi ini dapat disambungkan ke script Python Anda. -->
+        </div>
+
+        <div class="schedule-card">
+          <div class="table-title">
+            <h3>Jadwal Imam & Khatib</h3>
+            <span>Minggu berjalan</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Hari</th>
+                  <th>Subuh</th>
+                  <th>Dzuhur</th>
+                  <th>Ashar</th>
+                  <th>Maghrib</th>
+                  <th>Isya</th>
+                  <th>Khusus</th>
+                </tr>
+              </thead>
+              <tbody data-imam-table></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="konten" class="section content-section">
+        <div class="section__heading">
+          <p class="eyebrow">Portal Konten</p>
+          <h2>Artikel, Berita, dan Kegiatan</h2>
+          <p>Informasi terbaru yang dikelola melalui CMS masjid.</p>
+        </div>
+        <div class="content-filter" role="tablist" aria-label="Filter konten">
+          <button class="chip is-active" type="button" data-filter="semua">Semua</button>
+          <button class="chip" type="button" data-filter="artikel">Artikel</button>
+          <button class="chip" type="button" data-filter="berita">Berita</button>
+          <button class="chip" type="button" data-filter="kegiatan">Kegiatan</button>
+        </div>
+        <div class="content-grid" data-content-grid></div>
+      </section>
+
+      <section id="keuangan" class="section finance-section">
+        <div class="section__heading">
+          <p class="eyebrow">Transparansi</p>
+          <h2>Rekapitulasi Keuangan Masjid</h2>
+          <p>Ringkasan kas dibuat sederhana agar mudah dibaca jamaah.</p>
+        </div>
+
+        <div class="finance-summary" data-finance-summary></div>
+        <div class="chart" aria-label="Grafik pemasukan dan pengeluaran" data-finance-chart></div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Tanggal</th>
+                <th>Keterangan</th>
+                <th>Pemasukan</th>
+                <th>Pengeluaran</th>
+              </tr>
+            </thead>
+            <tbody data-finance-table></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="dkm" class="section dkm-section">
+        <div class="section__heading">
+          <p class="eyebrow">Profil DKM</p>
+          <h2>Struktur Pengurus</h2>
+          <p>Dewan Kemakmuran Masjid yang bertugas melayani jamaah.</p>
+        </div>
+        <div class="dkm-grid" data-dkm-grid></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <strong>Masjid Jami Anyar</strong>
+      <p>Jl. Masjid Raya No. 1, Indonesia. Kontak: info@masjidjami.test</p>
+    </footer>
+
+    <script src="assets/js/main.js" defer></script>
+  </body>
+</html>
